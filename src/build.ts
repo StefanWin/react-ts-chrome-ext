@@ -51,7 +51,7 @@ const onBundled = (bundle: Bundler.ParcelBundle) => {
     popup.on('bundled', onBundled);
     await popup.bundle();
 
-    const background = new Bundler('./src/Background.ts', {...bundlerOptions, outFile: 'background.js'});
+    const background = new Bundler('./src/background.ts', bundlerOptions);
     background.on('buildStart', onStart);
     background.on('buildError', onError);
     background.on('buildEnd', onEnd);

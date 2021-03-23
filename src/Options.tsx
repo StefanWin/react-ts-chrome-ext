@@ -1,7 +1,7 @@
-import { Checkbox, createMuiTheme, CssBaseline, FormControlLabel, Grid, Paper, ThemeProvider, Typography } from '@material-ui/core';
+import { Checkbox, createMuiTheme, CssBaseline, FormControlLabel, Grid, Paper, TextField, ThemeProvider, Typography } from '@material-ui/core';
 import React from 'react';
 import ReactDom from 'react-dom';
-import { Settings } from './Background';
+import { defaultSettings, Settings } from './background';
 
 
 const theme = createMuiTheme({
@@ -24,10 +24,7 @@ class Options extends React.Component<OptionsProps, OptionsState>{
     super(props);
 
     this.state = {
-      settings: {
-        foo: false,
-        bar: false,
-      }
+      settings: defaultSettings
     }
 
     chrome.storage.local.get('settings', ({ settings }) => {
@@ -39,15 +36,26 @@ class Options extends React.Component<OptionsProps, OptionsState>{
 
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  updateStorage = () => {
+    chrome.storage.local.set({ settings: this.state.settings });
+  }
+
+  handleCheckBoxToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       settings: {
         ...this.state.settings,
         [event.target.name]: event.target.checked,
       }
-    }, () => {
-      chrome.storage.local.set({ settings: this.state.settings });
-    })
+    }, this.updateStorage)
+  }
+
+  handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      settings: {
+        ...this.state.settings,
+        [event.target.name]: event.target.value
+      }
+    }, this.updateStorage);
   }
 
   render() {
@@ -59,14 +67,17 @@ class Options extends React.Component<OptionsProps, OptionsState>{
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel
-              control={<Checkbox checked={this.state.settings.foo} onChange={this.handleChange} name="foo" />}
-              label="foo"
+              control={<Checkbox checked={this.state.settings.booleanValue} onChange={this.handleCheckBoxToggle} name="booleanValue" />}
+              label="booleanValue"
             />
           </Grid>
           <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox checked={this.state.settings.bar} onChange={this.handleChange} name="bar" />}
-              label="bar"
+            <TextField
+              value={this.state.settings.stringValue}
+              onChange={this.handleTextChange}
+              name="stringValue"
+              variant="outlined"
+              fullWidth
             />
           </Grid>
         </Grid>
@@ -76,9 +87,9 @@ class Options extends React.Component<OptionsProps, OptionsState>{
 }
 
 ReactDom.render(
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Options />
-        </ThemeProvider>,
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <Options />
+  </ThemeProvider>,
   document.getElementById("root")
 )

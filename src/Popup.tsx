@@ -1,7 +1,8 @@
-import { Button, createMuiTheme, CssBaseline, Grid, IconButton, Paper, ThemeProvider, Typography } from '@material-ui/core';
+import { Button, createMuiTheme, CssBaseline, Divider, Grid, IconButton, Paper, ThemeProvider, Typography } from '@material-ui/core';
 import React from 'react';
 import ReactDom from 'react-dom';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { defaultSettings, Settings } from './background';
 
 const theme = createMuiTheme({
   palette: {
@@ -15,6 +16,7 @@ interface PopupProps {
 
 interface PopupState {
   clickCount: number;
+  settings: Settings;
 }
 
 class Popup extends React.Component<PopupProps, PopupState>{
@@ -22,13 +24,24 @@ class Popup extends React.Component<PopupProps, PopupState>{
   constructor(props: PopupProps) {
     super(props);
     this.state = {
-      clickCount: 0
+      clickCount: 0,
+      settings: defaultSettings,
     }
+
+    chrome.storage.local.get(['settings', 'clickCount'], ({ settings, clickCount }) => {
+      const casted = settings as Settings;
+      this.setState({
+        clickCount,
+        settings: casted
+      })
+    })
   }
 
   private handleClick = () => {
     this.setState({
       clickCount: this.state.clickCount + 1
+    }, () => {
+      chrome.storage.local.set({ clickCount: this.state.clickCount });
     })
   }
 
@@ -53,6 +66,15 @@ class Popup extends React.Component<PopupProps, PopupState>{
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h4">{`Click Count : ${this.state.clickCount}`}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography>{`Setting 'stringValue' : ${this.state.settings.stringValue}`}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography>{`Setting 'booleanValue' : ${this.state.settings.booleanValue}`}</Typography>
           </Grid>
         </Grid>
       </Paper>
