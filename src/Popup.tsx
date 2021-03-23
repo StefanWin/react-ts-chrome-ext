@@ -2,7 +2,7 @@ import { Button, createMuiTheme, CssBaseline, Divider, Grid, IconButton, Paper, 
 import React from 'react';
 import ReactDom from 'react-dom';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { defaultSettings, Settings } from './background';
+import { darkTheme, defaultSettings, lightTheme, Settings } from './background';
 
 const theme = createMuiTheme({
   palette: {
@@ -51,41 +51,44 @@ class Popup extends React.Component<PopupProps, PopupState>{
 
   render() {
     return (
-      <Paper style={{ padding: "5px", margin: "5px", width: "500px" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <Typography variant="h4">Popup</Typography>
+      <ThemeProvider theme={this.state.settings.useDarkTheme ? darkTheme : lightTheme}>
+        <CssBaseline />
+        <Paper style={{ padding: "5px", margin: "5px", width: "500px" }}>
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <Typography variant="h4">Popup</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <IconButton onClick={this.goToOptions}>
+                <SettingsIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="outlined" onClick={this.handleClick}>Click Me</Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h4">{`Click Count : ${this.state.clickCount}`}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={4}>
+              <Typography>{`Setting 'stringValue' : ${this.state.settings.stringValue}`}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography>{`Setting 'booleanValue' : ${this.state.settings.booleanValue}`}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography>{`Setting 'useDarkTheme' : ${this.state.settings.useDarkTheme}`}</Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            <IconButton onClick={this.goToOptions}>
-              <SettingsIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="outlined" onClick={this.handleClick}>Click Me</Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="h4">{`Click Count : ${this.state.clickCount}`}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography>{`Setting 'stringValue' : ${this.state.settings.stringValue}`}</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography>{`Setting 'booleanValue' : ${this.state.settings.booleanValue}`}</Typography>
-          </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      </ThemeProvider>
     )
   }
 }
 
 ReactDom.render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Popup />
-  </ThemeProvider>,
+  <Popup />,
   document.getElementById("root")
 )
