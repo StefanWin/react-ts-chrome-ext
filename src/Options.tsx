@@ -38,22 +38,25 @@ class Options extends React.Component<OptionsProps, OptionsState> {
   }
 
   updateStorage = () => {
-    chrome.storage.local.set({ settings: this.state.settings });
+    const { settings } = this.state;
+    chrome.storage.local.set({ settings });
   };
 
   handleCheckBoxToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { settings } = this.state;
     this.setState({
       settings: {
-        ...this.state.settings,
+        ...settings,
         [event.target.name]: event.target.checked,
       },
     }, this.updateStorage);
   };
 
   handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { settings } = this.state;
     this.setState({
       settings: {
-        ...this.state.settings,
+        ...settings,
         [event.target.name]: event.target.value,
       },
     }, this.updateStorage);
@@ -67,18 +70,20 @@ class Options extends React.Component<OptionsProps, OptionsState> {
   };
 
   toggleShowConfirmDialog = () => {
+    const { showConfirmDialog } = this.state;
     this.setState({
-      showConfirmDialog: !this.state.showConfirmDialog,
+      showConfirmDialog: !showConfirmDialog,
     });
   };
 
   render() {
+    const { settings, showConfirmDialog } = this.state;
     return (
-      <ThemeProvider theme={this.state.settings.useDarkTheme ? darkTheme : lightTheme}>
+      <ThemeProvider theme={settings.useDarkTheme ? darkTheme : lightTheme}>
         <CssBaseline />
         <span>
           <Dialog
-            open={this.state.showConfirmDialog}
+            open={showConfirmDialog}
             onClose={this.toggleShowConfirmDialog}
           >
             <DialogTitle>Reset extensions settings to default values?</DialogTitle>
@@ -104,19 +109,19 @@ class Options extends React.Component<OptionsProps, OptionsState> {
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox checked={this.state.settings.booleanValue} onChange={this.handleCheckBoxToggle} name="booleanValue" />}
+                control={<Checkbox checked={settings.booleanValue} onChange={this.handleCheckBoxToggle} name="booleanValue" />}
                 label="booleanValue"
               />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox checked={this.state.settings.useDarkTheme} onChange={this.handleCheckBoxToggle} name="useDarkTheme" />}
+                control={<Checkbox checked={settings.useDarkTheme} onChange={this.handleCheckBoxToggle} name="useDarkTheme" />}
                 label="Use Dark Theme?"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                value={this.state.settings.stringValue}
+                value={settings.stringValue}
                 onChange={this.handleTextChange}
                 name="stringValue"
                 variant="outlined"

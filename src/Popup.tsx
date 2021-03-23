@@ -35,10 +35,12 @@ class Popup extends React.Component<PopupProps, PopupState> {
   }
 
   private handleClick = () => {
+    const { clickCount } = this.state;
     this.setState({
-      clickCount: this.state.clickCount + 1,
+      clickCount: clickCount + 1,
     }, () => {
-      chrome.storage.local.set({ clickCount: this.state.clickCount });
+      const { clickCount: newClickCount } = this.state;
+      chrome.storage.local.set({ clickCount: newClickCount });
     });
   };
 
@@ -47,8 +49,9 @@ class Popup extends React.Component<PopupProps, PopupState> {
   };
 
   render() {
+    const { settings, clickCount } = this.state;
     return (
-      <ThemeProvider theme={this.state.settings.useDarkTheme ? darkTheme : lightTheme}>
+      <ThemeProvider theme={settings.useDarkTheme ? darkTheme : lightTheme}>
         <CssBaseline />
         <Paper style={{ padding: '5px', margin: '5px', width: '500px' }}>
           <Grid container spacing={2}>
@@ -64,19 +67,19 @@ class Popup extends React.Component<PopupProps, PopupState> {
               <Button variant="outlined" onClick={this.handleClick}>Click Me</Button>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h4">{`Click Count : ${this.state.clickCount}`}</Typography>
+              <Typography variant="h4">{`Click Count : ${clickCount}`}</Typography>
             </Grid>
             <Grid item xs={12}>
               <Divider />
             </Grid>
             <Grid item xs={4}>
-              <Typography>{`Setting 'stringValue' : ${this.state.settings.stringValue}`}</Typography>
+              <Typography>{`Setting 'stringValue' : ${settings.stringValue}`}</Typography>
             </Grid>
             <Grid item xs={4}>
-              <Typography>{`Setting 'booleanValue' : ${this.state.settings.booleanValue}`}</Typography>
+              <Typography>{`Setting 'booleanValue' : ${settings.booleanValue}`}</Typography>
             </Grid>
             <Grid item xs={4}>
-              <Typography>{`Setting 'useDarkTheme' : ${this.state.settings.useDarkTheme}`}</Typography>
+              <Typography>{`Setting 'useDarkTheme' : ${settings.useDarkTheme}`}</Typography>
             </Grid>
           </Grid>
         </Paper>

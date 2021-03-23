@@ -18,7 +18,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   extends: [
-    'airbnb-typescript/base',
+    'airbnb-typescript',
   ],
 
   rules: {
