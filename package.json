@@ -5,7 +5,7 @@
   "main": "src/build.ts",
   "scripts": {
     "build": "ts-node src/build.ts",
-    "lint" : "eslint --ext .ts --ext .tsx ./src --fix"
+    "lint": "eslint --ext .ts --ext .tsx ./src --fix"
   },
   "author": {
     "name": "Stefan Wintergerst",

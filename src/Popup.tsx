@@ -6,7 +6,7 @@ import ReactDom from 'react-dom';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {
   darkTheme, defaultSettings, lightTheme, Settings,
-} from './background';
+} from './Background';
 
 interface PopupProps {
 

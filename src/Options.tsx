@@ -9,7 +9,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import {
   darkTheme, defaultSettings, lightTheme, Settings,
-} from './background';
+} from './Background';
 
 interface OptionsProps {
 
