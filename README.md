@@ -19,5 +19,5 @@
 - option to reset options to defaults
 
 ## TODO
-- add `eslint` config
+- ~~add `eslint` config~~
 - configure hot reload

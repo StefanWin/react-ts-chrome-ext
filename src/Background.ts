@@ -1,18 +1,18 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme } from '@material-ui/core';
 
-// define your themes here 
+// define your themes here
 // https://material-ui.com/customization/theming/
 export const darkTheme = createMuiTheme({
   palette: {
-    type: "dark",
-  }
-})
+    type: 'dark',
+  },
+});
 
 export const lightTheme = createMuiTheme({
   palette: {
-    type: "light",
-  }
-})
+    type: 'light',
+  },
+});
 
 // Define your extensions settings here.
 export interface Settings {
@@ -26,9 +26,9 @@ export const defaultSettings: Settings = {
   booleanValue: true,
   stringValue: 'hello',
   useDarkTheme: true,
-}
+};
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({ settings: defaultSettings });
   chrome.storage.local.set({ clickCount: 0 });
-})
+});

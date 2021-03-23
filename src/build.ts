@@ -1,39 +1,37 @@
+/* eslint-disable no-console */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import Bundler from 'parcel-bundler';
-import Path from 'path';
 
 import * as fs from 'fs-extra';
 
 const bundlerOptions: Bundler.ParcelOptions = {
-  outDir: "dist",
+  outDir: 'dist',
   sourceMaps: false,
   watch: false,
   minify: true,
-}
+};
 
 const onStart = (entryPoints: string[]) => {
-  // entryPoints.forEach(console.log);
-}
+  entryPoints.forEach((e) => console.log(e));
+};
 
 const onError = (err: Error) => {
   console.error(err);
-}
+};
 
 const onEnd = () => {
   console.log('bundle finish');
-}
+};
 
 const onBundled = (bundle: Bundler.ParcelBundle) => {
   console.log(`bundled ${bundle.name}<${bundle.type}>`);
-
-}
-
+};
 
 (async () => {
   try {
-
     const distExists = await fs.pathExists('./dist');
     if (distExists) {
-      console.log('cleaning dist...')
+      console.log('cleaning dist...');
       fs.remove('./dist');
     }
 
@@ -58,14 +56,11 @@ const onBundled = (bundle: Bundler.ParcelBundle) => {
     background.on('bundled', onBundled);
     await background.bundle();
 
-
     console.log('copying manifest...');
     await fs.copyFile('./src/manifest.json', './dist/manifest.json');
     console.log('copying icons...');
     await fs.copy('./public/icons', './dist/icons/');
-
   } catch (error) {
     console.error(error);
   }
 })();
-

@@ -1,14 +1,12 @@
-import { Button, createMuiTheme, CssBaseline, Divider, Grid, IconButton, Paper, ThemeProvider, Typography } from '@material-ui/core';
+import {
+  Button, CssBaseline, Divider, Grid, IconButton, Paper, ThemeProvider, Typography,
+} from '@material-ui/core';
 import React from 'react';
 import ReactDom from 'react-dom';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { darkTheme, defaultSettings, lightTheme, Settings } from './background';
-
-const theme = createMuiTheme({
-  palette: {
-    type: "dark",
-  }
-})
+import {
+  darkTheme, defaultSettings, lightTheme, Settings,
+} from './background';
 
 interface PopupProps {
 
@@ -19,41 +17,40 @@ interface PopupState {
   settings: Settings;
 }
 
-class Popup extends React.Component<PopupProps, PopupState>{
-
+class Popup extends React.Component<PopupProps, PopupState> {
   constructor(props: PopupProps) {
     super(props);
     this.state = {
       clickCount: 0,
       settings: defaultSettings,
-    }
+    };
 
     chrome.storage.local.get(['settings', 'clickCount'], ({ settings, clickCount }) => {
       const casted = settings as Settings;
       this.setState({
         clickCount,
-        settings: casted
-      })
-    })
+        settings: casted,
+      });
+    });
   }
 
   private handleClick = () => {
     this.setState({
-      clickCount: this.state.clickCount + 1
+      clickCount: this.state.clickCount + 1,
     }, () => {
       chrome.storage.local.set({ clickCount: this.state.clickCount });
-    })
-  }
+    });
+  };
 
   private goToOptions = () => {
-    chrome.tabs.create({ url: "/options.html" });
-  }
+    chrome.tabs.create({ url: '/options.html' });
+  };
 
   render() {
     return (
       <ThemeProvider theme={this.state.settings.useDarkTheme ? darkTheme : lightTheme}>
         <CssBaseline />
-        <Paper style={{ padding: "5px", margin: "5px", width: "500px" }}>
+        <Paper style={{ padding: '5px', margin: '5px', width: '500px' }}>
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <Typography variant="h4">Popup</Typography>
@@ -84,11 +81,11 @@ class Popup extends React.Component<PopupProps, PopupState>{
           </Grid>
         </Paper>
       </ThemeProvider>
-    )
+    );
   }
 }
 
 ReactDom.render(
   <Popup />,
-  document.getElementById("root")
-)
+  document.getElementById('root'),
+);
